@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "./todoSlice";
 
 const AddTodo = () =>{
 
     const [name, setName] = useState('');
     const dispatch = useDispatch();
+    const id = useSelector(state => state.todos.length +1);
     const handleAddTodo = (e)=> {
         e.preventDefault();
         const todoName = name.trim();
         if (!todoName){
             return;
         }
-        const todo = { name: todoName, completed: false, user_id: 1};
+        const todo = {id, name: todoName, completed: false, user_id: 1};
         dispatch(addTodo(todo));
         setName('');
     };

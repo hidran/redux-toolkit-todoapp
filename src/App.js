@@ -1,6 +1,7 @@
 import './App.css';
 import {  useSelector } from 'react-redux';
 import AddTodo from './features/todos/AddTodo';
+import TodoItem from './features/todos/TodoItem';
 function App() {
   const todos = useSelector(state => state.todos);
   return (
@@ -11,7 +12,7 @@ function App() {
     <AddTodo/>
     <ul className='list-group'>
      {
-      todos.map(todo => <li className='list-group-item' key={todo.id}>{todo.name}</li>)
+      todos.map(todo => <TodoItem key ={todo.id} todo ={todo} />)
      }
       </ul>
     </div>

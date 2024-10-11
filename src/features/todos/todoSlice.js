@@ -5,13 +5,13 @@ const initialState = [
         completed: false,
         name: 'Study react',
         user_id:1,
-        id: (new Date()).getTime()
+        id: 1
     },
     {
         completed: true,
         name: 'Study C#',
         user_id: 1,
-        id: Math.random()
+        id: 2
     }
 ];
 const todoSlice = createSlice({
@@ -27,15 +27,16 @@ const todoSlice = createSlice({
         removeTodo(state, action) {
 
             state = state.filter(todo => todo.id !== action.payload.id);
+            return state;
 
         },
         toggleTodo(state, action) {
-            state = state.map(todo => {
-                if (todo.id === action.payload.id){
-                    todo.completed = !todo.completed;
-                }
-                return todo;
-            });
+
+            const todo = state.find(todo => todo.id === action.payload.id);
+            if(todo){
+                todo.completed = !todo.completed
+            }
+        
 
         }
     }
