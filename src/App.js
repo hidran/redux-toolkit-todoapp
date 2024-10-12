@@ -1,20 +1,15 @@
 import './App.css';
-import {  useSelector } from 'react-redux';
 import AddTodo from './features/todos/AddTodo';
-import TodoItem from './features/todos/TodoItem';
+import TodoList from './features/todos/TodoList';
 function App() {
-  const todos = useSelector(state => state.todos);
+ 
   return (
     <div className='container'>
     <div className="row">
       <div className='col-md8'>
-    <h1>TODO LIST APP</h1>
-    <AddTodo/>
-    <ul className='list-group'>
-     {
-      todos.map(todo => <TodoItem key ={todo.id} todo ={todo} />)
-     }
-      </ul>
+        <h1>TODO LIST APP</h1>
+        <AddTodo/>
+        <TodoList/>
     </div>
     </div>
     </div>
