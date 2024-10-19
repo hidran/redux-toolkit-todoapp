@@ -9,11 +9,15 @@ const TodoItem = ({todo}) =>{
     const handleRemove = () => {
         dispatch(removeTodo(todo));
     }
-    return (
+    const spanStyle = { textDecoration: todo.completed ? 'line-through' : '', cursor: 'pointer' };
+   
+    const checkboxStyle =  todo.completed ? 'bi-check-square' : 'bi-square' ;
+ return (
         <li className="list-group-item d-flex align-items-center justify-content-between"
          key={todo.id}>
             <span onClick={handleToggle}
-             style = {{textDecoration: todo.completed? 'line-through': '', cursor:'pointer'}}>
+             style = {spanStyle}>
+            <button className="btn"><i className={`bi ${checkboxStyle}`} ></i></button>
             {todo.name}
 
             </span>
