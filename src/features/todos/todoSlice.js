@@ -4,13 +4,13 @@ const initialState = [
     {
         completed: false,
         name: 'Study react',
-        user_id:1,
+        list_id:1,
         id: 1
     },
     {
         completed: true,
         name: 'Study C#',
-        user_id: 1,
+        list_id: 1,
         id: 2
     }
 ];
@@ -41,6 +41,6 @@ const todoSlice = createSlice({
         }
     }
 });
-export const {addTodo, removeTodo, toggleTodo} = todoSlice.actions;
+export const { addTodo, removeTodo, toggleTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;

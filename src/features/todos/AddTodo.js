@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "./todoSlice";
 
-const AddTodo = () =>{
+const AddTodo = ({listId}) =>{
 
     const [name, setName] = useState('');
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const AddTodo = () =>{
         if (!todoName){
             return;
         }
-        const todo = {id, name: todoName, completed: false, user_id: 1};
+        const todo = {id, name: todoName, completed: false, list_id: listId};
         dispatch(addTodo(todo));
         setName('');
     };

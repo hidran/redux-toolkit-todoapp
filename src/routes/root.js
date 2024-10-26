@@ -8,7 +8,7 @@ import TodoList from '../features/todos/TodoList';
 import AddList from '../features/lists/AddList';
 import Lists from '../features/lists/Lists';
 import AddTodo from '../features/todos/AddTodo';
-
+import ListDetails from '../features/lists/ListDetails';
 const router = createBrowserRouter([
     {
         path: '/',
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
             </div>
         ),
     },
+        {
+            path: 'lists/:listId',
+            element: <ListDetails/>,
+        },
     {
         path: 'login',
         element: <h2>Login</h2>,
