@@ -22,7 +22,7 @@ const todoSlice = createSlice({
         //action.payload = todo
         addTodo(state, action){
             console.log(action)
-            state.push(action.payload)
+            state.unshift(action.payload)
         },
         removeTodo(state, action) {
 
