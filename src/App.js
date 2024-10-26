@@ -1,7 +1,5 @@
 import './App.css';
 import NavBar from './app/components/Navbar';
-import AddTodo from './features/todos/AddTodo';
-import TodoList from './features/todos/TodoList';
 import { Outlet } from 'react-router-dom';
 function App() {
  

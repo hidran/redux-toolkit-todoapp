@@ -1,10 +1,13 @@
 import {
-    createBrowserRouter,
-    Route
+    createBrowserRouter
+ 
    
 } from 'react-router-dom';
 import App from '../App';
 import TodoList from '../features/todos/TodoList';
+import AddList from '../features/lists/AddList';
+import Lists from '../features/lists/Lists';
+import AddTodo from '../features/todos/AddTodo';
 
 const router = createBrowserRouter([
     {
@@ -13,11 +16,19 @@ const router = createBrowserRouter([
     children:[
     {
         path: 'todos',
-        element: <TodoList/>,
+            element: <div className="mt-3">
+                <AddTodo />
+                <TodoList />
+            </div>
     },
     {
         path: 'lists',
-        element: <h2>lists</h2>,
+        element: (
+            <div className="mt-3">
+                <AddList />
+                <Lists />
+            </div>
+        ),
     },
     {
         path: 'login',
