@@ -9,6 +9,7 @@ import AddList from '../features/lists/AddList';
 import Lists from '../features/lists/Lists';
 import AddTodo from '../features/todos/AddTodo';
 import ListDetails from '../features/lists/ListDetails';
+import { Login } from '../features/auth/Login';
 const router = createBrowserRouter([
     {
         path: '/',
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
         },
     {
         path: 'login',
-        element: <h2>Login</h2>,
+        element: <Login/>,
     },
     {
         path: 'register',
