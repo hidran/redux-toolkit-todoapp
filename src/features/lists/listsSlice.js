@@ -15,8 +15,15 @@ const listsSlice = createSlice({
         removeList: (state, action) => {
             return state.filter(list => list.id !== action.payload.id);
         },
+        updateList: (state, action) => {
+            const{listId, name} = action.payload;
+            const list = state.find(list => list.id === listId);
+            if(list){
+                list.name = name;
+            }
+        },
     },
 });
 
-export const { addList, removeList } = listsSlice.actions;
+export const { addList, removeList, updateList } = listsSlice.actions;
 export default listsSlice.reducer;
