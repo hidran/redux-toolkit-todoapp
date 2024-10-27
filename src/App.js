@@ -10,7 +10,7 @@ function App() {
       <div className='col-md8'>
         <h1>TODO LIST APP</h1>
           <Outlet />
-        <p>Select a list to add todos</p>
+      
     </div>
     </div>
     </div>
