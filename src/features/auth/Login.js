@@ -1,19 +1,25 @@
 import  { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginFailure, loginSuccess } from './authSlice';
+import  {loginUser,loginFailure}  from './authSlice';
 import { useNavigate } from 'react-router-dom';
-import {register} from '../../services/authServices';
+
 export function Login() {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const error = useSelector(state => state.auth.error);
     const navigate = useNavigate();
-    const handleLogin = (e) =>{
+    const handleLogin = async (e) =>{
         e.preventDefault();
-        if(email === 'hidran@hidran.it' && password === 'dededede'){
-            dispatch(loginSuccess({email}));
-            navigate('/');
+        if(email  && password){
+            try {
+                await dispatch(loginUser({ email, password })).unwrap();
+                navigate('/');
+            } catch (error) {
+                console.log(error);
+            }
+          
 
         } else {
             dispatch(loginFailure('Invalid email or password'))
