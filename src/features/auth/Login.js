@@ -2,6 +2,7 @@ import  { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginFailure, loginSuccess } from './authSlice';
 import { useNavigate } from 'react-router-dom';
+import {register} from '../../services/authServices';
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
