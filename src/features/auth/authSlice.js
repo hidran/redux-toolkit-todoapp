@@ -30,6 +30,7 @@ export const loginUser = createAsyncThunk('auth/login',
             localStorage.setItem('tokeExpires', response.data.expiryDate);
             return response.data;
         } catch (error) {
+            console.log(error)
             return thunkApi.rejectWithValue(error);
         }
 
@@ -64,22 +65,26 @@ const authSlice = createSlice({
             state.error = null;
         }).addCase(registerUser.fulfilled, (state, action) => {
             state.loading = false;
+            state.isAuthenticated = true;
             state.user = action.payload.user;
         })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload.message || 'Registration failed';
+                state.error = action.payload.response.data.message || 'Registration failed';
             })
             .addCase(loginUser.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
             }).addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
+                state.isAuthenticated = true;
+                console.log(action.payload)
                 state.user = action.payload.user;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload.message || 'Login failed';
+                console.log(action.payload);
+                state.error = action.payload.response.data.message || 'Login failed';
             })
     }
     
