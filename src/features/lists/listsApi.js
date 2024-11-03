@@ -3,12 +3,28 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const listsApi = createApi({
 
     reducerPath:'lists',
-    baseQuery: fetchBaseQuery({baseUrl:process.env.REACT_APP_API_BASE_URL + '/lists'}),
+    baseQuery: fetchBaseQuery(
+        {
+        baseUrl:process.env.REACT_APP_API_BASE_URL + '/lists',
+        credentials:'include',
+        prepareHeaders:(headers, {getState}) =>{
+            const token = getState().auth.token;
+            if(token){
+                headers.set('Authorization','Bearer ' + token);
+            }
+        }
+    }),
     tagTypes:['List'],
     endpoints:(builder) =>(
         {
             getLists:builder.query({
                     query:() => '',
+                    transformResponse:(response) =>({
+                        lists:response.data,
+                        success:response.success,
+                        message:response.message,
+                        error:response.error
+                    }),
                     providesTags:['List']
                 }
             ),
