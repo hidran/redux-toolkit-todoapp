@@ -63,6 +63,7 @@ const authSlice = createSlice({
         builder.addCase(registerUser.pending,(state,action) =>{
             state.loading = true;
             state.error = null;
+            state.isAuthenticated = false;
         }).addCase(registerUser.fulfilled, (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
@@ -70,11 +71,13 @@ const authSlice = createSlice({
         })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
+                state.isAuthenticated = false;
                 state.error = action.payload.response.data.message || 'Registration failed';
             })
             .addCase(loginUser.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
+                state.isAuthenticated = false;
             }).addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.isAuthenticated = true;
@@ -83,6 +86,7 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
+                state.isAuthenticated = false;
                 console.log(action.payload);
                 state.error = action.payload.response.data.message || 'Login failed';
             })
