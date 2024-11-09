@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { removeList, updateList } from './listsSlice';
 import { useNavigate } from 'react-router-dom';
-
+import { useDeleteListMutation,useUpdateListMutation } from './listsApi';
+import { Loading } from '../../app/components/Loading';
+import { Error } from '../../app/components/Error';
 function ListItem({ list }) {
-  const [isEditing,setIsEditing] = useState(false);
-    const [name, setName] = useState(list.name);
-    const dispatch = useDispatch();
 
-    const handleRemove = () => {
-        dispatch(removeList({ id: list.id }));
+   const [updateList,{isError:isUpdateError, isLoading:isUpdateLoading, isSuccess:isUpdateSuccess}] =useUpdateListMutation();
+    const [deleteList, { isError: isDeleteError, isLoading: isDeleteLoading, isSuccess: isDeleteSuccess }] = useDeleteListMutation();
+
+   const [isEditing,setIsEditing] = useState(false);
+   const [name, setName] = useState(list.name);
+   const [error, setError] = useState('');
+    const handleRemove = async () => {
+        try {
+            await deleteList(list.id)
+        } catch (error) {
+            setError(error.message);
+        }
+       
     };
     const handleEdit = () => {
         setIsEditing(true);
@@ -25,13 +33,20 @@ function ListItem({ list }) {
         setName(list.name);
         setIsEditing(false);
     }
-    const handleSave = () => {
-        dispatch(updateList({listId:list.id, name}));
+    const handleSave = async () => {
+          try {
+              await updateList({ id: list.id, name })
+        } catch (error) {
+            setError(error.message);
+        }
         setIsEditing(false);
     }
     return (
         <li className="list-group-item d-flex justify-content-between align-items-center">
+            {isUpdateLoading || isDeleteLoading?<Loading></Loading>: null }
+            {error || isUpdateError || isDeleteError ? <Error>{error+isUpdateError+isDeleteError}</Error> : null}
             <div onClick={handleNavigate} style={{cursor:'pointer'}}>
+                
                 {isEditing ? (
                     <input value={name} onChange={ e=> setName(e.target.value)}/>
                 ):(

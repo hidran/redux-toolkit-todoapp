@@ -8,7 +8,7 @@ const listsApi = createApi({
         baseUrl:process.env.REACT_APP_API_BASE_URL + '/lists',
         credentials:'include',
         prepareHeaders:(headers, {getState}) =>{
-            const token = getState().auth.token;
+            const token = getState().auth.token ?? localStorage.getItem('token');
             if(token){
                 headers.set('Authorization','Bearer ' + token);
             }
@@ -46,8 +46,8 @@ const listsApi = createApi({
             updateList: builder.mutation(
                 {
                     query: ({ id, ...listObj }) => ({
-                        url: '/' + listObj.id,
-                        method: 'post',
+                        url: '/' + id,
+                        method: 'put',
                         body: listObj
                     }),
                     invalidatesTags:['List']

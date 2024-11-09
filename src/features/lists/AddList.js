@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addList } from './listsSlice';
-
+import { useCreateListMutation } from './listsApi';
+import { Error } from '../../app/components/Error';
 function AddList() {
     const [name, setName] = useState('');
-    const dispatch = useDispatch();
-
-    const handleAddList = (e) => {
+    const mutation = useCreateListMutation();
+    console.log(mutation)
+    const [createList, {isLoading,isError,isSuccess}] = useCreateListMutation();
+    const [error, setError] = useState('');
+    const handleAddList = async (e) => {
         e.preventDefault();
         if (!name.trim()) return;
 
-        const newList = {
-            id: Math.random(),
-            name,
-            user_id: 1, // Set a fixed user ID for now (could be dynamic)
-            created_at: new Date().toISOString(),
+        const newList = {          
+            name
         };
-
-        dispatch(addList(newList));
+        try {
+            await createList(newList);
+        } catch (error) {
+            setError(error.message)
+        }
+      
         setName('');
     };
 
@@ -33,6 +37,7 @@ function AddList() {
             <button className="btn btn-primary" type="submit">
                 <i className="bi bi-plus-circle"></i> {/* Bootstrap icon */}
             </button>
+            {error ?<Error>error</Error>: null}
         </form>
     );
 }
