@@ -39,6 +39,11 @@ const listsApi = createApi({
                             method:'post',
                             body:newList
                     }),
+                    transformErrorResponse:(resp)=>{
+                        console.log('data transformErrorResponse',resp)
+                        return resp.data.error
+                        
+                    },
                     invalidatesTags: ['List']
                     }
         )
@@ -49,7 +54,8 @@ const listsApi = createApi({
                         url: '/' + id,
                         method: 'put',
                         body: listObj
-                    }),
+                    })
+                   ,
                     invalidatesTags:['List']
                 }
             ),

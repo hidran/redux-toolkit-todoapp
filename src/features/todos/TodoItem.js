@@ -1,17 +1,24 @@
-import { useDispatch } from 'react-redux';
-import { removeTodo, toggleTodo, updateTodo } from './todoSlice';
 import { useState } from 'react';
+import {  useCreateTodoMutation, useUpdateTodoMutation, useDeleteTodoMutation } from './todosApi';
+import { Error } from '../../app/components/Error';
 
 const TodoItem = ({todo}) =>{
-    const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(todo.name);
     const [completed, setCompleted] = useState(todo.completed);
+
+    const [updateTodo, { isLoading: isUpdating, isError: updateError }] = useUpdateTodoMutation();
+    const [deleteTodo, { isLoading: isDeleting, isError: deleteError }] = useDeleteTodoMutation();
+    const [errorMsg, setErrorMsg] = useState('');
     const handleToggle = ()=>{
-       dispatch(toggleTodo(todo))
+     //  dispatch(toggleTodo(todo))
     }
-    const handleRemove = () => {
-        dispatch(removeTodo(todo));
+    const handleRemove = async () => {
+        try {
+            await deleteTodo(todo.id).unwrap();
+        } catch (error) {
+            setErrorMsg(error.data?.message || "Failed to delete todo");
+        }
     }
     const handleCancel = () => {
         setName(todo.name);
@@ -20,9 +27,13 @@ const TodoItem = ({todo}) =>{
     const handleEdit = () => {
         setIsEditing(true);
     };
-    const handleSave = () => {
-        dispatch(updateTodo({ id: todo.id, name, completed}));
-        setIsEditing(false);
+    const handleSave = async () => {
+        try {
+            await updateTodo({ id:todo.id,listId:todo.list_id,completed, name }).unwrap();
+            setIsEditing(false);
+        } catch (error) {
+            setErrorMsg(error.data?.message || "Failed to update todo");
+        }
     }
     const spanStyle = { textDecoration: todo.completed || completed? 'line-through' : '', cursor: 'pointer' };
    
@@ -59,7 +70,7 @@ const TodoItem = ({todo}) =>{
                 {
                 isEditing?( 
                     <>
-                        <button title="Save" className="btn btn-primary me-2" onClick={handleSave}>
+                         <button disabled={isUpdating || isDeleting} title="Save" className="btn btn-primary me-2" onClick={handleSave}>
                             <i className="bi bi-floppy-fill"></i>
                         </button>
                         <button title="Back to list" className="btn btn-secondary" onClick={handleCancel}>
@@ -68,15 +79,16 @@ const TodoItem = ({todo}) =>{
                     </> 
                     ):( 
                     <>
-                    <button className="btn btn-primary me-2" title="Edit todo" onClick={handleEdit}>
+                             <button disabled={isUpdating || isDeleting} className="btn btn-primary me-2" title="Edit todo" onClick={handleEdit}>
                                     <i className="bi bi-pencil-square"></i> 
                                 </button>
-                        <button onClick={handleRemove} className="btn btn-danger">
+                             <button disabled={isUpdating || isDeleting} onClick={handleRemove} className="btn btn-danger">
                             <i className="bi h4 bi-trash"></i>
                             </button>
                     </>)
                 }
              </div>
+         {(updateError || deleteError) && <Error>{errorMsg}</Error>}
          </li>
         
             

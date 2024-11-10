@@ -13,7 +13,7 @@ export const registerUser = createAsyncThunk('auth/register',
         try{
             const response = await register(userData);
             localStorage.setItem('token',response.data.token);
-            localStorage.setItem('tokeExpires', response.data.expiryDate);
+            localStorage.setItem('tokeExpires', response.data.expiresAt);
             return response.data;
         }catch(error){
             console.log(error);
@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk('auth/login',
         try {
             const response = await login(userData);
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('tokeExpires', response.data.expiryDate);
+            localStorage.setItem('tokeExpires', response.data.expiresAt);
             return response.data;
         } catch (error) {
             console.log(error)

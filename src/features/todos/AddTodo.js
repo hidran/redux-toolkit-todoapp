@@ -1,28 +1,30 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "./todoSlice";
+import { useState } from 'react';
+import { useCreateTodoMutation } from './todosApi';
+import { Error } from "../../app/components/Error";
 
 const AddTodo = ({listId}) =>{
 
     const [name, setName] = useState('');
-    const dispatch = useDispatch();
-    const id = useSelector(state => state.todos.length +1);
-    const handleAddTodo = (e)=> {
+    const [errorMsg, setErrorMsg] = useState('');
+    const [createTodo] = useCreateTodoMutation();
+    const handleAddTodo = async (e)=> {
         e.preventDefault();
-        const todoName = name.trim();
-        if (!todoName){
-            return;
+        try {
+            await createTodo({ name, listId }).unwrap();
+            setName('');
+        } catch (error) {
+            setErrorMsg(error.data?.message || "Failed to create todo");
         }
-        const todo = {id, name: todoName, completed: false, list_id: listId};
-        dispatch(addTodo(todo));
-        setName('');
     };
     return (
+        <>
         <form className="input-group mb-3" onSubmit={handleAddTodo}>
         <input className="form-control"  value= {name} onChange={(e) => setName(e.target.value) }
            placeholder = "Add todo"/>
 <button className="btn btn-primary">ADD TODO <i className="bi bi-plus-circle"></i></button>
         </form>
+            {errorMsg && <Error>{errorMsg}</Error> }
+        </>
     );
 }
 export default AddTodo;

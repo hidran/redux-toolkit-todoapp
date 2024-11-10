@@ -1,4 +1,9 @@
-.App {
-  text-align: center;
-  
+.fade-out {
+  opacity: 0;
+  transition: opacity 2s ease-out;
+}
+.hidden,div.hidden{
+  display: none;
+    transition: display 4s ease-out;
+
 }

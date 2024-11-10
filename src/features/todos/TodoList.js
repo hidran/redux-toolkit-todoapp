@@ -1,16 +1,17 @@
-import { useSelector } from 'react-redux';
 import TodoItem from './TodoItem';
+import { useGetTodosQuery} from './todosApi';
 
 const TodoList = ({ listId }) =>{
   
-    const todos = useSelector(state => state.todos);
-    const litsTodos = todos.filter(todo => todo.list_id === listId);
-    
+    const { data, error, isLoading } = useGetTodosQuery(listId);
+  
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
 return (
    
         <ul className='list-group'>
             {
-            litsTodos.map(todo =>  <TodoItem key={todo.id} todo={todo} />)
+            data?.todos.map(todo =>  <TodoItem key={todo.id} todo={todo} />)
             }
         </ul>    
 )
