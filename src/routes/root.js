@@ -11,6 +11,7 @@ import AddTodo from '../features/todos/AddTodo';
 import ListDetails from '../features/lists/ListDetails';
 import { Login } from '../features/auth/Login';
 import { Register } from '../features/auth/Register';
+import ProtectedRoute from '../app/components/ProtectedRoute';
 
 const router = createBrowserRouter([
     {
@@ -19,19 +20,21 @@ const router = createBrowserRouter([
     children:[
     {
         path: 'todos',
-            element: <div className="mt-3">
-                <AddTodo />
-                <TodoList />
-            </div>
+            element:<ProtectedRoute>
+                <div className="mt-3">
+                    <AddTodo />
+                    <TodoList />
+                </div>
+            </ProtectedRoute>
     },
     {
         path: 'lists',
-        element: (
-            <div className="mt-3">
-                <AddList />
-                <Lists />
-            </div>
-        ),
+        element: <ProtectedRoute>
+                <div className="mt-3">
+                    <AddList />
+                    <Lists />
+                </div>
+            </ProtectedRoute>,
     },
         {
             path: 'lists/:listId',

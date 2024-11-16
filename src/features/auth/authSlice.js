@@ -44,6 +44,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
             state.expiresAt = null;
+            state.isAuthenticated = false;
             localStorage.removeItem('token'); // Rimuove il token al logout
         },
         loginFailure(state, action) {
