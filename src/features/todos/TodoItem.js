@@ -10,8 +10,15 @@ const TodoItem = ({todo}) =>{
     const [updateTodo, { isLoading: isUpdating, isError: updateError }] = useUpdateTodoMutation();
     const [deleteTodo, { isLoading: isDeleting, isError: deleteError }] = useDeleteTodoMutation();
     const [errorMsg, setErrorMsg] = useState('');
-    const handleToggle = ()=>{
-     //  dispatch(toggleTodo(todo))
+    const handleToggle = async ()=>{
+        const newCompleted = !completed;
+        setCompleted(newCompleted);
+        try {
+            await updateTodo({ id: todo.id, listId: todo.list_id, completed: newCompleted, name }).unwrap();
+           
+        } catch (error) {
+            setErrorMsg(error.data?.message || "Failed to update todo");
+        }
     }
     const handleRemove = async () => {
         try {

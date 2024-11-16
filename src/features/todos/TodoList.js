@@ -1,3 +1,6 @@
+import { Loading } from '../../app/components/Loading';
+import { Error } from '../../app/components/Error';
+
 import TodoItem from './TodoItem';
 import { useGetTodosQuery} from './todosApi';
 
@@ -5,8 +8,8 @@ const TodoList = ({ listId }) =>{
   
     const { data, error, isLoading } = useGetTodosQuery(listId);
   
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (isLoading) return <Loading>Loading...</Loading>;
+    if (error) return <Error>Error: {error.message}</Error>;
 return (
    
         <ul className='list-group'>
